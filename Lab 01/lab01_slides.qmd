@@ -526,12 +526,14 @@ The function has the generic structure
 
 ```{r, eval = FALSE}
 tapply(y, x, FUN)
+# y is the thing, x is how you wanna split, FUN is the function
 ```
 
 ## Example: `tapply()`
 ```{r}
 # calculate mean flipper length for each penguin species
 tapply(penguins$flipper_length_mm, penguins$species, mean)
+# take flipper_lengh, split by species, apply mean to each of the splits. 
 ```
 
 ```{r}
