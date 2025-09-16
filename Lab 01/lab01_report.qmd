@@ -1,5 +1,6 @@
 ---
 title: "BSTA 6100 Lab 1 Report"
+author: "Jennifer Xu"
 date: "today"
 format:
   html:
