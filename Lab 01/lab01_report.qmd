@@ -16,9 +16,9 @@ crossref:
 
 **Collaborators:** If applicable, replace this text with the names of anyone you collaborated with on this project.
 
--  Complete the following exercises designed to help get you up and running in R and RStudio.
-- Use appropriate graphical and numerical summaries to justify all answers. Written responses without appropriate R code and results will receive no credit. Similarly, R output without written answers to the questions will receive no credit.
--  Keep your answers inside the ".answer" blocks. Do NOT delete the three colon blocks (`:::`) and keep your responses between them.
+-   Complete the following exercises designed to help get you up and running in R and RStudio.
+-   Use appropriate graphical and numerical summaries to justify all answers. Written responses without appropriate R code and results will receive no credit. Similarly, R output without written answers to the questions will receive no credit.
+-   Keep your answers inside the ".answer" blocks. Do NOT delete the three colon blocks (`:::`) and keep your responses between them.
 -   Use the tutorial for help, and feel free to email Nick or Hong with questions.
 
 ## Background {.unnumbered}
@@ -38,16 +38,17 @@ We can load the package using the `library()` function. Then, we can load a data
 ```{r}
 #| label: setup
 # DO NOT EDIT THIS CHUNK
-library(oibiostat)
-data("dds.discr")
+dds.discr <- read.csv("dds_discr.csv")
 ```
 
 After loading the data, you can find a description of the variables by typing `?dds.discr` in the R console, then enter/return.
 
 ## Examining Data
+
 To begin understanding a dataset and developing a sense of context, start by examining the distributions of single variables.
 
 ### Inspect the `data.frame`
+
 ::: question
 Print the first 6 rows of the `dds.discr` data and the data structure.
 :::
@@ -63,6 +64,7 @@ Print the first 6 rows of the `dds.discr` data and the data structure.
 :::
 
 ### Examine annual expenditures
+
 ::: question
 Produce a histogram, boxplot, and numerical summaries to examine the distribution of annual expenditures. For most consumers, is the amount of financial support provided by the DDS relatively high or low?
 :::
@@ -80,6 +82,7 @@ Replace this text with your written response.
 :::
 
 ### Examine age
+
 ::: question
 The variable `age` directly records a consumer's age; in the `age.cohort` variable, consumers are assigned to one of six age cohorts. Describe the distribution of age in this sample of consumers. Do consumers tend to be older or younger?
 :::
@@ -97,6 +100,7 @@ Replace this text with your written response.
 :::
 
 ### Examine ethnicity {#sec-examineEth}
+
 ::: question
 Is there an equal representation of ethnic groups in this sample of consumers?
 :::
@@ -114,6 +118,7 @@ Replace this text with your written response.
 :::
 
 ### Examine gender
+
 ::: question
 Does gender appear to be balanced in this sample of consumers?
 :::
@@ -135,6 +140,7 @@ Replace this text with your written response.
 After examining variables individually, explore how variables are related to each other. It is often useful to start by investigating the relationships between two variables, particularly between the primary response variable of interest and the exploratory variables. For this case study, the response variable is `expenditures`, the amount of funds the California DDS allocates annually to each consumer.
 
 ### Expenditures by age
+
 ::: question
 How do annual expenditures vary by age? Is there a large amount of variation in expenditures between age cohorts? Use the `age.cohort` variable, and produce appropriate graphical and numeric summaries.
 :::
@@ -151,9 +157,9 @@ How do annual expenditures vary by age? Is there a large amount of variation in 
 Replace this text with your written answer.
 :::
 
-
 ### Knowledge check: Subsetting
-:::question
+
+::: question
 Make a histogram of expenditures among Hispanic males aged 22-50.
 :::
 
@@ -170,8 +176,9 @@ Replace this text with your written answer.
 :::
 
 ### Expenditures by gender
-:::question
-Do annual expenditures seem to vary by gender? 
+
+::: question
+Do annual expenditures seem to vary by gender?
 :::
 
 ::: answer
@@ -187,8 +194,9 @@ Replace this text with your written answer.
 :::
 
 ### Expenditures by ethnic group
-:::question
-How does the distribution of expenditures vary by ethnic group? Does there seem to be a difference in the amount of funding that a person receives, on average, between different ethnicities? 
+
+::: question
+How does the distribution of expenditures vary by ethnic group? Does there seem to be a difference in the amount of funding that a person receives, on average, between different ethnicities?
 :::
 
 ::: answer
@@ -205,10 +213,11 @@ Replace this text with your written answer.
 
 ## Dive Deeper
 
-As shown in @sec-examineEth, two of the ethnic groups, Hispanic and White non-Hispanic, comprise the majority of the data; some ethnic groups represent less than 10\% of the observations. For ethnic groups with relatively small sample sizes, it is possible that the observed samples are not representative of the larger populations. The rest of this analysis will focus on comparing how `expenditures` varies between the two largest ethnic groups.
+As shown in @sec-examineEth, two of the ethnic groups, Hispanic and White non-Hispanic, comprise the majority of the data; some ethnic groups represent less than 10% of the observations. For ethnic groups with relatively small sample sizes, it is possible that the observed samples are not representative of the larger populations. The rest of this analysis will focus on comparing how `expenditures` varies between the two largest ethnic groups.
 
 ### Expenditures in Hispanic and non-Hispanic White consumers
-:::question
+
+::: question
 Compare the distribution of `expenditures` between Hispanic and White non-Hispanic consumers, graphically and numerically. Do Hispanic consumers, on average, seem to receive less financial support from the California DDS than a White non-Hispanic consumer?
 :::
 
@@ -224,12 +233,11 @@ Compare the distribution of `expenditures` between Hispanic and White non-Hispan
 Replace this text with your written answer.
 :::
 
-
 ### Ages of Hispanic and non-Hispanic White consumers
 
 When using data to investigate a question, it is important to explore not only how explanatory variables are related to the response variable(s), but also how explanatory variables influence each other.
 
-:::question
+::: question
 Recall that expenditures is strongly associated with age---older individuals tend to receive more financial support. Is there also an association between age and ethnicity, for these two ethnic groups? Examine the distribution of age within each group and describe your findings.
 :::
 
@@ -249,7 +257,7 @@ Replace this text with your written answer.
 
 Recall that a confounding variable is a variable that is associated with the response variable and the exploratory variable under consideration. In this setting, age is a confounder for the relationship between `expenditures` and `ethnicity`. Just as it would be incorrect to claim that sunscreen causes skin cancer, it is essential here to recognize that there is more to the story than the apparent association between `expenditures` and `ethnicity`.
 
-:::question
+::: question
 For a closer look at the relationship between age, ethnicity, and expenditures, compare how average `expenditures` differs by ethnicity within each age cohort. If age is indeed the primary source of the observed variation in expenditures, then there should be little difference in average `expenditures` between individuals in different ethnic groups but the same age cohort. Is this the case? Describe your findings.
 :::
 
@@ -267,7 +275,7 @@ Replace this text with your written answer.
 
 ## Conclusion
 
-:::question
+::: question
 Based on this exploratory analysis, does there seem to be evidence of ethnic discrimination in the amount of financial support provided by the California DDS? Summarize your findings in language accessible to a non-statistician.
 :::
 
@@ -275,9 +283,8 @@ Based on this exploratory analysis, does there seem to be evidence of ethnic dis
 Replace this text with your written answer.
 :::
 
-
 ## Submission Instructions {.unnumbered}
 
-1. When you've completed this assignment, click Render one last time.
-1. Go to the Lab 1 assignment in Canvas and click "Start Assignment".
-1. Upload the **rendered .html file** (called "`lab01_report.html`") to Canvas, and click "Submit Assignment".
+1.  When you've completed this assignment, click Render one last time.
+2.  Go to the Lab 1 assignment in Canvas and click "Start Assignment".
+3.  Upload the **rendered .html file** (called "`lab01_report.html`") to Canvas, and click "Submit Assignment".
