@@ -41,10 +41,7 @@ Tips and Tricks for Quarto
 ## Question 2
 
 ::: question
-Use R as a calculator to compute the following values. Assign the first value the name `x`, the second value the name `y`, and the third `z`.
-$$\frac{27}{2 + 3^2}$$
-$$\frac{1}{3} + \frac{1}{5} \times 0.257$$
-$$92^3 - 734$$
+Use R as a calculator to compute the following values. Assign the first value the name `x`, the second value the name `y`, and the third `z`. $$\frac{27}{2 + 3^2}$$ $$\frac{1}{3} + \frac{1}{5} \times 0.257$$ $$92^3 - 734$$
 :::
 
 ::: answer
@@ -84,6 +81,6 @@ Replace this text with your bulleted list for Question 4.
 
 # Submission Instructions
 
-1. When you've completed this assignment, click Render one last time.
-1. Go to the Lab 0 assignment in Canvas and click "Start Assignment".
-1. Upload the rendered .html file (called "lab00_report.html") to Canvas, and click "Submit Assignment".
+1.  When you've completed this assignment, click Render one last time.
+2.  Go to the Lab 0 assignment in Canvas and click "Start Assignment".
+3.  Upload the rendered .html file (called "lab00_report.html") to Canvas, and click "Submit Assignment".

@@ -39,7 +39,8 @@ We can **read** data into R using a function called `read.csv()`. The first argu
 ```{r}
 #| label: read-data
 #| echo: true
-penguins <- read.csv("penguins.csv", stringsAsFactors = TRUE)
+penguins <- read.csv("penguins.csv", stringsAsFactors = TRUE) #anything you see text, it's not unstructared raw text data, it's categorical data
+
 ```
 
 The `penguins` object is called a `data.frame`.
@@ -126,6 +127,9 @@ barplot(table(penguins$species),
      ylab = "Frequency",
      main = "Bar Chart of Number of Penguins of Each Species Observed",
      col = c("darkorange1", "mediumorchid2", "darkcyan"))
+
+
+#Notice automatically alphabetical order. 
 ```
 
 ## Bar Charts in R
