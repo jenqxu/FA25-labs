@@ -1,5 +1,5 @@
 ---
-title: "Intro to Quarto"
+title: "Jennifer Xu"
 subtitle: "BSTA 6100 Fall 2025 Lab 00"
 author: "Nicholas J. Seewald, PhD"
 date: "today"
@@ -174,5 +174,11 @@ An R Script file can be thought of as one large code chunk; R script files are o
 R script files are useful when the primary goal is to explore a dataset or test short R programs. Quarto files are ideal for preparing documents that need to contain both explanatory text and statistical output, such as a lab report.
 
 ## Bonus: RStudio Customization
+<<<<<<< Updated upstream
 
 The *RStudio* workspace can be customized easily. The panels can be rearranged by going to *Tools \> Global Options \> Pane Layout*. Other customization options (e.g., font size, themes, etc.) are available under *Global Options \> Appearance*. I particularly like turning on rainbow parentheses: *Global Options \> Code \> Editing \> Use rainbow parentheses*.
+=======
+The *RStudio* workspace can be customized easily. The panels can be rearranged by going to *Tools > Global Options > Pane Layout*. Other customization options (e.g., font size, themes, etc.) are available under *Global Options > Appearance*. I particularly like turning on rainbow parentheses: *Global Options > Code > Editing > Use rainbow parentheses*.
+
+
+>>>>>>> Stashed changes

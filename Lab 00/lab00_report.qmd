@@ -1,6 +1,6 @@
 ---
 title: "BSTA 6100 Lab 0 Report"
-author: "Your Name"
+author: "Jennifer Xu"
 date: "today"
 format:
   html:
@@ -31,11 +31,11 @@ We're going to start by playing a bit with Markdown syntax. Read carefully throu
 :::
 
 ::: answer
-Tips and Tricks for Quarto
+**Tips and Tricks for Quarto**
 
-1.  Knit and knit often. You'll be turning in rendered documents for grading, and it's important that you know what they look like!
-2.  Make sure your chunk syntax is correct. You should only have one set of opening and closing backticks (\`\`\`) per chunk!
-3.  Be persistent! Learning R takes time, and it's okay if you don't get it right away. Just keep trying, and don't be afraid to ask for help!
+1.  *Knit and knit often*. You'll be turning in rendered documents for grading, and it's important that you know what they look like!
+2.  *Make sure your chunk syntax is correct*. You should only have one set of opening and closing backticks (\`\`\`) per chunk!
+3.  **Be persistent!** Learning R takes time, and it's okay if you don't get it right away. Just keep trying, and don't be afraid to ask for help!
 :::
 
 ## Question 2
@@ -47,6 +47,9 @@ Use R as a calculator to compute the following values. Assign the first value th
 ::: answer
 ```{r question2, error = T}
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+x <- 27/(2+3^2)
+y <- 1/3 + (1/5)*(0.257)
+z <- 92^3 - 734
 
 ```
 
@@ -66,7 +69,7 @@ Write a brief paragraph describing previous coursework in statistics (if any) an
 :::
 
 ::: answer
-Replace this text with your answer to Question 3.
+During my undergraduate degree, I studied biostatistics and took several courses of topics like sample survey methodology, principles of experimental analysis, and intro biostatistics. I hope to gain applicable experience in analyzing longitudinal data and applying foundational analyses to real-world examples that are often messy and complex.
 :::
 
 ## Question 4
@@ -76,7 +79,12 @@ Write a bulleted list giving your undergraduate institution, year of graduation,
 :::
 
 ::: answer
-Replace this text with your bulleted list for Question 4.
+-   UNC-Chapel Hilll
+-   2020
+-   Biostatistics
+-   US
+    -   NC
+    -   Durham
 :::
 
 # Submission Instructions

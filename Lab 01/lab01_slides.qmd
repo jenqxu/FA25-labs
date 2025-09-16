@@ -378,6 +378,14 @@ legend("topleft",
        legend = c("Adelie", "Chinstrap", "Gentoo"),
        col = c("darkorange1", "mediumorchid2", "darkcyan"),
        pch = c(0, 1, 2))
+
+
+
+
+# Nick prefers base-R plots, b/c you need to know what you're putting on plots. base R does plots like drawings - we need to put whatever we want. GGPlot is "smart" and adds everything. Make sure we can explain EVERY FEATURE IN PLOTS. 
+# Nick usually minimizes package use, b/c packages breaks
+# Note that R automatically looks at factors alpha-numeric order. And, c = combine. 
+
 ```
 
 ## Use Color Meaningfully and with Restraint

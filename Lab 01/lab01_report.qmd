@@ -1,6 +1,5 @@
 ---
 title: "BSTA 6100 Lab 1 Report"
-author: "Your Name"
 date: "today"
 format:
   html:
