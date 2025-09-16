@@ -181,4 +181,7 @@ The *RStudio* workspace can be customized easily. The panels can be rearranged b
 The *RStudio* workspace can be customized easily. The panels can be rearranged by going to *Tools > Global Options > Pane Layout*. Other customization options (e.g., font size, themes, etc.) are available under *Global Options > Appearance*. I particularly like turning on rainbow parentheses: *Global Options > Code > Editing > Use rainbow parentheses*.
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
