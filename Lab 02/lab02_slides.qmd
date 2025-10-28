@@ -1,0 +1,239 @@
+---
+title: "Lab 02 Tutorial"
+subtitle: "BSTA 6100 Fall 2025 Lab 02"
+author: "Nicholas J. Seewald, PhD"
+date: "today"
+echo: true
+format: 
+  revealjs:
+    theme: simple
+    scrollable: true
+    smaller: false
+    embed-resources: true
+    html-math-method: katex
+---
+
+## Topics
+
+1. Fitting and interpreting a line
+1. Estimating a regression line using least squares
+1. Checking assumptions with residual plots
+
+## Data
+
+We'll use data from a sample of 500 individuals 21 years of age or older collected as part of the National Health and Nutrition Examination Survey (NHANES).
+
+```{r}
+#| label: read-data
+
+nhanes <- read.csv("nhanes_samp_adult_500.csv")
+```
+
+Descriptions of the variables are in `nhanes_data_dictionary.txt`. 
+
+
+## Step 1: Visualize
+
+We can use a scatterplot to visualize the relationship between two numeric variables. Here, we'll regress BMI on age.
+
+```{r}
+#| label: scatterplot
+#| output-location: slide
+
+#plot the data
+plot(BMI ~ Age, 
+     data = nhanes,
+     main = "BMI versus Age in the NHANES data (n = 500)",
+     pch = 21, 
+     col = "cornflowerblue",
+     bg = "slategray2",
+     cex = 0.75)
+```
+
+## Step 2: Fit Regression Model
+
+```{r}
+#| label: model1
+
+mod1 <- lm(BMI ~ Age,
+           data = nhanes)
+
+mod1
+```
+
+## Using the `summary()` function {.smaller}
+We can use `summary()` to get more information from the model fit:
+
+```{r}
+#| label: summarize-mod1
+
+summary(mod1)
+```
+
+## Plotting the fitted regression model
+
+```{r}
+#| label: scatterplot-with-line
+#| output-location: slide
+
+#plot the data
+plot(BMI ~ Age, 
+     data = nhanes,
+     main = "BMI versus Age in the NHANES data (n = 500)",
+     pch = 21, 
+     col = "cornflowerblue",
+     bg = "slategray2",
+     cex = 0.75)
+
+abline(mod1, 
+       col = "red",
+       lty = 2,
+       lwd = 2)
+```
+
+## `abline()`
+
+The `abline()` function adds lines to plots.
+
+- On the last slide, we passed `abline()` an `lm` object; it automatically extracted the estimated slope and intercept.
+- We can also pass `abline()` a slope and intercept directly:
+
+```{r}
+#| eval: FALSE
+
+abline(a = NULL, b = NULL, h = NULL, v = NULL, reg = NULL,
+       coef = NULL, ...)
+```
+
+## Centering covariates
+
+```{r}
+#| label: centering-covariates
+
+# Approach 1: Create a new variable
+nhanes <- transform(nhanes,
+                    Age_cen = Age - mean(Age))
+
+mod2 <- lm(BMI ~ Age_cen, data = nhanes)
+
+# Approach 2: Inline centering
+mod3 <- lm(BMI ~ I(Age - mean(Age)),
+           data = nhanes)
+```
+
+:::aside
+Notes:
+
+1. In approach 2, note the use of the `I()` function. This allows inline computation in a model -- it forces R to interpret what's inside *as is*.
+1. You can use a similar approach to *scale* or *standardize* the covariate (just divide by the constant, e.g., `sd(Age)`)
+:::
+## Centering covariates {.smaller}
+
+```{r}
+mod1
+mod2
+mod3
+```
+
+
+## Extracting residuals
+
+Recall that $\hat{\epsilon}_i = Y_i - \hat{Y}_i$.
+
+We can either use the `residuals()` function ("method") for `lm` objects, or access the `residuals` component of the object using `$`:
+
+```{r}
+#| label: extract-residuals
+
+mod1.resids <- residuals(mod1)
+mod1.resids[1:5]
+
+mod1.resids <- mod1$residuals
+mod1.resids[1:5]
+```
+
+## Extracting predicted values
+Recall that $\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i$.
+
+We can either use the `predict()` function ("method") for `lm` objects, or access the `fitted.values` component of the object using `$`:
+
+```{r}
+#| label: extract-pred
+
+mod1.pred <- predict(mod1)
+mod1.pred[1:5]
+
+mod1.pred <- mod1$fitted.values
+mod1.pred[1:5]
+```
+
+# Checking Assumptions
+
+## Linear regression assumptions
+
+- **L**inearity
+- **I**ndependence
+- **N**ear normality
+- **E**qual variances
+
+We can check these assumptions with two plots.
+
+## Residuals vs. fitted values plot
+We'll plot the residuals $\hat{\epsilon}_i$ against the fitted values $\hat{Y}_i$.
+
+```{r}
+#| label: resid-fitted-plot
+#| output-location: slide
+plot(mod1.resids ~ mod1.pred,
+     main = "Residual Plot for BMI vs Age (n = 500)",
+     xlab = "Predicted BMI", ylab = "Residual",
+     pch = 21, col = "cornflowerblue", bg = "slategray2", 
+     cex = 0.75)
+
+abline(h = 0, lwd = 2, col = "darkgray")
+```
+
+## Residuals vs. fitted values plot
+What to look for:
+
+1. **Shape**: Recognizable patterns other than a flat line indicate that something's missing or that the functional form of the relationship between $Y$ and $X$ is *misspecified*. This checks the linearity assumption.
+1. **Spread**: The points should be evenly distributed around the x axis without *fanning* or *funneling*. This checks the equal variances assumption.
+
+## Residuals vs. fitted values plot
+
+```{r}
+#| label: resid-fitted-plot
+#| echo: false
+```
+
+## Quantile-quantile (Q-Q) plot
+
+A Q-Q plot displays the ordered values of the $n$ residuals against the corresponding $n$ quantiles of the standard normal distribution.
+
+The closer the points are to a 45$\degree$ line, the better the normality assumption is met.
+
+## Quantile-quantile (Q-Q) plot
+
+```{r}
+#| label: qq-plot
+
+qqnorm(mod1$residuals)
+qqline(mod1$residuals) # add 45deg line
+```
+
+## Interpreting Q-Q plots
+
+The Q-Q plot depicts *quantiles*: values that have accumulated a certain amount of area under a distribution to the left.
+
+- Points above the 45$\degree$ line indicate that area to the left accumulates *faster than expected* (sample quantiles are higher than the theoretical quantiles predict they will be). 
+- Points below the 45$\degree$ line indicate that area to the left accumulates *slower than expected* (sample quantiles are lower than the theoretical quantiles predict they will be).
+
+*What does this tell us about shape?*
+
+## Interpreting Q-Q plots
+
+```{r}
+#| label: qq-plot
+#| output-location: column
+```
+

@@ -182,6 +182,9 @@ The *RStudio* workspace can be customized easily. The panels can be rearranged b
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
