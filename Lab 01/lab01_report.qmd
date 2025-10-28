@@ -38,7 +38,7 @@ We can load the package using the `library()` function. Then, we can load a data
 ```{r}
 #| label: setup
 # DO NOT EDIT THIS CHUNK
-dds.discr <- read.csv("dds_discr.csv")
+dds.discr <- read.csv("dds_discr.csv") 
 ```
 
 After loading the data, you can find a description of the variables by typing `?dds.discr` in the R console, then enter/return.
@@ -59,6 +59,8 @@ Print the first 6 rows of the `dds.discr` data and the data structure.
 #| error: TRUE
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+head(dds.discr)
+str(dds.discr)
 
 ```
 :::
@@ -76,9 +78,18 @@ Produce a histogram, boxplot, and numerical summaries to examine the distributio
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
 
+#histogram
+hist(dds.discr$expenditures, main="Histogram of Annual Expenditures", xlab="Annual Expenditure ($)")
+
+#boxplot
+boxplot(dds.discr$expenditures, main="Boxplot of Annual Expenditures", ylab="Annual Expenditure ($)")
+
+#numerical summaries
+summary(dds.discr$expenditures)
+
 ```
 
-Replace this text with your written response.
+The amount of financial support provided by the DDS is relatively high for most customers, as demonstrated by the right skewed boxplot and histogram. 
 :::
 
 ### Examine age
@@ -94,9 +105,18 @@ The variable `age` directly records a consumer's age; in the `age.cohort` variab
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
 
+#change order of age.cohort
+dds.discr$age.cohort <- factor(dds.discr$age.cohort , levels=c("0-5", "6-12", "13-17", "18-21", "22-50", "51+"))
+
+#look at barcharts
+barplot(table(dds.discr$age), xlab="Age", ylab="Frequency", main="Bar Chart of Number of Individuals Observed of Each Age")
+
+barplot(table(dds.discr$age.cohort), xlab="Age Cohort", ylab="Frequency", main="Bar Chart of Number of Individuals Observed at Each Age Cohort")
+
+summary(dds.discr$age)
 ```
 
-Replace this text with your written response.
+In looking at the distribution of age (years) in the bar plot of age (years), the distribution is unimodal and skewed to the right, with a median at 18.0 and a mean at 22.8 years old. This suggests that consumers tend to be comparatively older compared when comparing to the center of the distribution. 
 :::
 
 ### Examine ethnicity {#sec-examineEth}
@@ -111,10 +131,13 @@ Is there an equal representation of ethnic groups in this sample of consumers?
 #| error: TRUE
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+table(dds.discr$ethnicity)
+
+barplot(table(dds.discr$ethnicity), main="Bar Chart of Number of Individuals Obseved of Each Ethnicity", las=3, names.arg=c("American\nIndian","Asian","Black","Hispanic","Multi Race", "Native\nHawaiian", "Other", "White not\nHispanic"))
 
 ```
 
-Replace this text with your written response.
+Thre is NOT an equal representation of ethnic groups in this sample of consumers, as demonstrated by the large representation of Hispanic and White not Hispanic individuals and the low representation of American Indian, Asian, Black, Multi Race, Native Hawiian, and Other ethnic categories. 
 :::
 
 ### Examine gender
@@ -129,10 +152,14 @@ Does gender appear to be balanced in this sample of consumers?
 #| error: TRUE
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+table(dds.discr$gender)
+
+barplot(table(dds.discr$gender), main="Bar Chart of Number of Individuals Obseved of Each Gender", las=3)
+
 
 ```
 
-Replace this text with your written response.
+Gender is fairly equally balanced in this sample. 
 :::
 
 ## Multivariable Relationships
@@ -152,9 +179,13 @@ How do annual expenditures vary by age? Is there a large amount of variation in 
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
 
+tapply(dds.discr$expenditures, dds.discr$age.cohort, summary)
+
+boxplot(dds.discr$expenditures ~ dds.discr$age.cohort, main="Boxplot of Annual Expenditures", ylab="Annual Expenditure ($)", xlab="Age Cohort")
+
 ```
 
-Replace this text with your written answer.
+There is large variation of annual expenditure between the age cohorts. Annual expenditure seems to increase with age.
 :::
 
 ### Knowledge check: Subsetting
@@ -170,9 +201,13 @@ Make a histogram of expenditures among Hispanic males aged 22-50.
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
 
+hispanic_males_22_50 <- subset(dds.discr, ethnicity=="Hispanic" & gender=="Male" & age.cohort=="22-50")
+
+hist(hispanic_males_22_50$expenditures, main="Histogram of Annual Expenditures of Hispanic Males Age 22-50", xlab="Expenditure ($)" )
+
 ```
 
-Replace this text with your written answer.
+The distribution of annual expenditures by Hispanic males aged 22-50 years old is unimodal and seems to lack skewness, with a center around 40K.
 :::
 
 ### Expenditures by gender
@@ -188,9 +223,13 @@ Do annual expenditures seem to vary by gender?
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
 
+tapply(dds.discr$expenditures, dds.discr$gender, summary)
+
+boxplot(dds.discr$expenditures ~ dds.discr$gender, main="Boxplot of Annual Expenditures", ylab="Annual Expenditure ($)", xlab="Gender")
+
 ```
 
-Replace this text with your written answer.
+Expenditures don't seem to vary by gender.
 :::
 
 ### Expenditures by ethnic group
@@ -206,9 +245,13 @@ How does the distribution of expenditures vary by ethnic group? Does there seem 
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
 
+tapply(dds.discr$expenditures, dds.discr$ethnicity, summary)
+
+boxplot(dds.discr$expenditures ~ dds.discr$ethnicity, main="Boxplot of Annual Expenditures", ylab="Annual Expenditure ($)", xlab="Ethnicity", las=2, names=c("American\nIndian","Asian","Black","Hispanic","Multi Race", "Native\nHawaiian", "Other", "White not\nHispanic"), par(cex.lab=0.7), par(cex.axis=0.7))
+
 ```
 
-Replace this text with your written answer.
+There is considerable variation in the expenditure by ethnic group. The variation in spread of ethnic groups like Multi Race vs. White not Hispanic suggest that there is a considerable difference in the in the expenditures between individuals in different ethnic groups. It is interesting that there are so many outliers in the Hispanic ethnicity group, 
 :::
 
 ## Dive Deeper
@@ -228,9 +271,16 @@ Compare the distribution of `expenditures` between Hispanic and White non-Hispan
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
 
-```
+#create new dataset
+white_vs_hispanic <- subset(dds.discr, ethnicity=="White not Hispanic" | ethnicity=="Hispanic")
 
-Replace this text with your written answer.
+tapply(white_vs_hispanic$expenditures, white_vs_hispanic$ethnicity, summary)
+
+boxplot(white_vs_hispanic$expenditures ~ white_vs_hispanic$ethnicity, main="Boxplot of Annual Expenditures", ylab="Annual Expenditure ($)", xlab="Ethnicity", las=2, names=c("Hispanic", "White not\nHispanic"), par(cex.lab=0.7), par(cex.axis=0.7))
+
+
+```
+There is considerable variation in the financial support for White non-Hispanic consumers vs. Hispanic consumers. Hispanic consumers on average seem to receive less financial support from the California DDS, as demonstrated by the median expenditure among Hispanic consumers about 3952 and the median expenditure among White not-Hispanic individuals was about 15718. However, within the Hispanic consumers, there are many more outliers than there are in the White not-Hispanic group. Both distributions seem to skew right as well. 
 :::
 
 ### Ages of Hispanic and non-Hispanic White consumers
@@ -248,9 +298,12 @@ Recall that expenditures is strongly associated with age---older individuals ten
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
 
-```
+tapply(white_vs_hispanic$age, white_vs_hispanic$ethnicity, summary)
 
-Replace this text with your written answer.
+boxplot(white_vs_hispanic$age ~ white_vs_hispanic$ethnicity, main="Boxplot of age", ylab="Age", xlab="Ethnicity", las=2, names=c("Hispanic", "White not\nHispanic"), par(cex.lab=0.7), par(cex.axis=0.7))
+
+```
+There is a difference in the centers of the age distributions (15 median for Hispanic vs. 21 median for White non-Hispanic). There is also a considerable difference in the spread, as for the Hispanic consumers the 25th and 75th percentiles are 9.75 and 20 respectively, whereas for White non-Hispanic consumers it's 21 and 33. This suggests that the White non-Hispanic consumers tend to be a older than the Hispanic consumers. 
 :::
 
 ### Moderation of age-expenditure association
@@ -268,9 +321,32 @@ For a closer look at the relationship between age, ethnicity, and expenditures, 
 
 # Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
 
+#Hispanic
+hispanic <- subset(white_vs_hispanic, ethnicity=="Hispanic")
+tapply(hispanic$expenditures, hispanic$age.cohort, mean)
+
+#White not Hispanic
+white <- subset(white_vs_hispanic, ethnicity=="White not Hispanic")
+tapply(white$expenditures, white$age.cohort, mean)
+
+# Look at graph
+white_vs_hispanic$ethnicity <- as.factor(white_vs_hispanic$ethnicity)
+
+plot(white_vs_hispanic$age, white_vs_hispanic$expenditures, 
+       main="Scatterplot of Annual Expenditures vs. Age by Ethnicity", 
+       xlab="Age", 
+       ylab="Annual Expenditure ($)", 
+       col = c("darkcyan", "mediumorchid2")[white_vs_hispanic$ethnicity])
+
+legend("topleft",
+       legend = c("Hispanic", "White not Hispanic"),
+       col = c("darkcyan", "mediumorchid2", ""),
+       pch = 1)
+
 ```
 
-Replace this text with your written answer.
+In comparing average expenditures by ethnicity within each age cohort, there is no considerable difference between Hispanic and White non-Hispanic consumer expenditures. For example, in the 18-21 cohort, White consumers have slightly higher expenditures by about \$100. For 0-5, Hispanic consumers have expenditures about \$30 more than White non-Hispanic consumers. For 6-12, there's about a \$300 difference, for 13-17 there's a \$50, for 22-50 there's an \$800 difference, and for 51+ there's a \$3000 difference. Additionally, in the graphical depiction of annual expenditure vs. age, I do not see much of a difference in the values of White non-Hispanic individuals vs. Hispanic individuals. 
+
 :::
 
 ## Conclusion
@@ -280,7 +356,7 @@ Based on this exploratory analysis, does there seem to be evidence of ethnic dis
 :::
 
 ::: answer
-Replace this text with your written answer.
+Based on this exploratory analysis, there does not seem to be evidence of ethnic discrimination in the amount of financial support provided by the California DDS. First, in general California DDS expenditures increase the older a consumer gets. Now, when focusing on the White non-Hispanic consumers and Hispanic consumers (these ethnic categories constitute a majority of the sample), we see that White non-Hispanic consumers tend to be a older than Hispanic consumers. As a result, White non-Hispanic consumer expenditures appear to be higher than that of Hispanic consumers. However, when looking at the the data of the White non-Hispanic consumers and the Hispanic consumers, we see that for both ethnic categories, individuals get about the same amount of expenditures as they age. As a result, there does not seem to be evidence of ethnic discrimination in the amount of financial support. 
 :::
 
 ## Submission Instructions {.unnumbered}
