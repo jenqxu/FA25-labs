@@ -1,0 +1,327 @@
+---
+title: "BSTA 6100 Lab 2 Report"
+author: "Jennifer Xu"
+date: "today"
+format:
+  html:
+    toc: true
+    toc-expand: true
+    theme: "zephyr"
+    css: ../assets/styles.css
+    embed-resources: true
+    number-sections: true
+crossref:
+  sec-prefix: Question
+---
+
+The relationship between two numerical variables can be visualized using a scatterplot in the $xy$-plane. The *predictor* variable is plotted on the horizontal axis, while the *response* variable is plotted on the vertical axis. This lab introduces the idea of using a straight line, $y = \beta_0 + \beta_1x$, where $\beta_0$ is the $y$-intercept and $\beta_1$ is the slope, to summarize data that exhibit an approximately linear relationship. The statistical model for least squares regression is also formally introduced, along with the residual plots used to assess the assumptions for linear regression.
+
+The material in this lab is adapted from *Introductory Statistics for the Life and Biomedical Sciences* by Julie Vu and David Harrington.
+
+## Background {.unnumbered}
+
+This lab uses data from the Prevention of REnal and Vascular END-stage Disease (PREVEND) study, which took place between 2003 and 2006 in the Netherlands. Clinical and demographic data for a sample of 500 (out of 4,095) individuals are stored in the `prevend` dataset distributed with this lab.
+
+As adults age, cognitive function declines over time; this is largely due to various cerebrovascular and neurodegenerative changes.
+
+The Ruff Figural Fluency Test (RFFT) is one measure of cognitive function that provides information about cognitive abilities such as planning and the ability to switch between different tasks. Scores on the RFFT range from 0 to 175 points, where higher scores are indicative of better cognitive function.
+
+The goal of this lab is to begin exploring the relationship between age and RFFT score in the `prevend` dataset.
+
+## Data Setup & Exploration
+
+### Load data
+
+::: question
+Use `read.csv()` to load the `prevend` dataset.
+:::
+
+::: answer
+```{r}
+#| label: question1.1
+#| error: TRUE
+
+# Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+ds <- read.csv("prevend.csv")
+
+str(ds)
+```
+:::
+
+### Examine bivariate relationships {#sec-scatterplot}
+
+::: question
+Create a scatterplot of RFFT score (`RFFT`) and age in years (`Age`) in `prevend`. Be sure to provide an appropriate title an axis labels.
+:::
+
+::: answer
+```{r}
+#| label: question1.2
+#| error: TRUE
+
+# Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+plot(data=ds, RFFT ~ Age, main="Ruff Figural Fluency Test vs. Age (Years) in the Prevend Study", pch=21, cex=0.8, col="cornflowerblue", bg="slategray2", xlab="Age (Years)", ylab="Cognitive Function (RFFT)")
+```
+:::
+
+## Fitting and interpreting a line
+
+Examine the plot you made in @sec-scatterplot and consider possible lines that are a reasonable approximation for the relationship in the plot.
+
+### Plot a line {#sec-plotline1}
+
+::: question
+Consider the line $\hat{y} = -20 + 2x$. Copy and paste your plotting code from @sec-scatterplot, then add this line on top using `abline()`.
+:::
+
+::: answer
+```{r}
+#| label: question2.1
+#| error: TRUE
+
+# Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+
+# plot the data
+plot(data=ds, RFFT ~ Age, main="Ruff Figural Fluency Test vs. Age (Years) in the Prevend Study", pch=21, cex=0.8, col="cornflowerblue", bg="slategray2", xlab="Age (Years)", ylab="Cognitive Function (RFFT)") 
+
+# plot the line
+abline(a=-20, b=2, col="darkorange", lty=2, lwd=2)
+
+```
+:::
+
+### Register a hypothesis
+
+::: question
+**Before** you answer @sec-sseline1 below, do you expect the SSE for this line to be relatively small or relatively large? Explain why in 1-2 sentences.
+:::
+
+::: answer
+I expect the SSE to be relatively large. SSE is defined as the sum of the squared errors. Because there is so much spread around the line, particularly towards age 40 and 80, it's possible that the points further away from the line would result in larger residuals, thus inflating the SSE. 
+:::
+
+### Compute SSE {#sec-sseline1}
+
+:::question
+Calculate the SSE, the sum of the squared residuals, for the line you plotted in @sec-plotline1. Was your guess correct?
+:::
+
+:::answer
+```{r}
+#| label: question2.3
+#| error: TRUE
+
+# Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+
+# error: observed - expected
+ds$sqerror <- (ds$RFFT - (-20 + 2*ds$Age))^2
+sum(ds$sqerror)
+
+```
+
+Yes, my answer (relatively large) was fairly close to the calculated SSE 1,206,875. 
+
+:::
+
+### Fit simple linear regression {#sec-slr}
+
+:::question
+Fit, and summarize the results of, a simple linear regression model for `RFFT` on `Age`. Report estimates of $\beta_0$ and $\beta_1$.
+:::
+
+:::answer
+```{r}
+#| label: question2.4
+#| error: TRUE
+
+# Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+
+# get the model
+m1 <- lm(RFFT ~ Age, data=ds)
+summary(m1)
+
+# plot the data
+plot(data=ds, RFFT ~ Age, main="Ruff Figural Fluency Test vs. Age (Years) in the Prevend Study", pch=21, cex=0.8, col="cornflowerblue", bg="slategray2", xlab="Age (Years)", ylab="Cognitive Function (RFFT)") 
+
+# plot the line
+abline(m1, col="darkorange", lty=2, lwd=2)
+
+summary(m1)
+
+```
+
+The estimated $\beta_0$ is 137.55 and the estimated $\beta_1$ is -1.26.
+
+:::
+
+### Plot simple linear regression fit
+
+:::question
+Copy and paste your plotting code from @sec-plotline1, then add the estimated least-squares regression line *in a different color* than the first line. Add a legend to your plot to help the reader distinguish between the lines. Be sure to include an appropriate title and axis labels.
+:::
+
+:::answer
+```{r}
+#| label: question2.5
+#| error: TRUE
+
+# Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+
+# plot the data
+plot(data=ds, RFFT ~ Age, main="Ruff Figural Fluency Test vs. Age (Years) in the Prevend Study", pch=21, cex=0.8, col="cornflowerblue", bg="slategray2", xlab="Age (Years)", ylab="Cognitive Function (RFFT)") 
+
+# plot the line (given)
+abline(a=-20, b=2, col="darkorange", lty=2, lwd=2)
+
+# plot the line (estimate)
+abline(m1, col="darkgreen", lty=2, lwd=2)
+
+legend("topright",
+       legend = c("Given", "Estimated"),
+       col = c("darkorange", "darkgreen", ""),
+       lty=2:2, lwd=2)
+
+```
+
+:::
+
+### Interpret simple linear regression fit
+
+:::question
+Interpret the estimated slope and intercept values in the context of the data. Comment on whether the intercept value has any interpretive meaning in this setting.
+:::
+
+:::answer
+$\beta_1$ tells us that -1.26 is the expected difference in RFFT associated with a 1-year difference in age. $\beta_0$ tells us the expected RFFT in individuals at age 0. The intercept value has no meaning in this setting because the study was focused on adults, whereas the intercept would correspond to someone age 0 years old, which could very well have a different unknown pattern of RFFT and Age. 
+:::
+
+### Estimate means
+
+:::question
+Based on the linear model, how much does RFFT score differ, on average, between an individual who is 60 years old versus an individual who is 50 years old?
+:::
+
+:::answer
+```{r}
+#| label: question2.7
+#| error: TRUE
+
+# Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+(137.54972 - 1.26136*60) - (137.54972 - 1.26136*50)
+# -12.6136
+
+```
+
+RFFT differs about -12.6136 on average between an individual who is 60 years old and an individual who is 50 years old. 
+:::
+
+### Write the equation of the fitted line
+
+:::question
+Write the equation of the least squares line in the form $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1x$. According to the linear model, what is the average RFFT score for an individual who is 70 years old?
+:::
+
+:::answer
+```{r}
+#| label: question2.8
+#| error: TRUE
+
+# Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+
+137.54972 - 1.26136*70
+
+```
+
+$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1x$ so 
+$\hat{y} = 137.54972 - 1.26136x$ which yields for someone 70 years old 137.54972 - 1.26136*70.
+The average RFFT score for an individual who is 70 years old is 49.25452. 
+:::
+
+### Validity of estimates
+
+:::question
+Is it valid to use the linear model to estimate RFFT score for an individual who is 20 years old? Explain your answer in 1-2 sentences.
+:::
+
+:::answer
+It is not valid to use the linear model to estimate RFFT score for an individual who is 20 years old. Doing so would be extrapolation, as someone 20 years old would be outside the range of ages of the observed individuals. The model for someone around 20 years old could look very different from this model. 
+:::
+
+## Checking assumptions with residual plots
+
+### Create a residuals vs. fitted values plot {#sec-residplot}
+
+::: question
+Create a residual plot where the residual values are plotted on the $y$-axis against predicted values from the model on the $x$-axis, using the model you fit in @sec-slr.
+:::
+
+:::answer
+```{r}
+#| label: question3.1
+#| error: TRUE
+
+# Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+
+# extract residuals and predicted values
+m1_resid <- m1$residuals
+m1_pred <- m1$fitted.values
+
+# create plot
+plot(m1_resid ~ m1_pred,
+     main = "Residual Plot for RFFT vs. Age (n = 500)",
+     xlab = "Predicted RFFT", ylab = "Residual",
+     pch = 21, col = "cornflowerblue", bg = "slategray2", 
+     cex = 0.75)
+
+abline(h = 0, lwd = 2, col = "darkgray")
+
+
+```
+:::
+
+### Assess the linearity assumption
+:::question
+Does a linear model seem appropriate for these data, based on the plot you created in @sec-residplot? Explain in 1-2 sentences.
+:::
+
+:::answer
+To check the linearity assumption, we would want the residuals to have no distinguishable shape around the horizontal line, otherwise this would suggest a misspecified relationship. Since we do not see a distinguishable shape around the line of 0, in other words the mean of the residuals seems to be about 0 along the line of 0, the linear model seems appropriate for these data. 
+:::
+
+### Assess the equal variance assumption
+:::question
+Does the variability of the residuals seem constant across the range of predicted RFFT scores? Explain in 1-2 sentences.
+:::
+
+:::answer
+To check the equal variance assumption, we would want the residuals to be evenly distributed around the X axis. This plot shows that there is some slight fanning, but overall the residuals are generally evenly distributed. 
+:::
+
+### Assess the normality assumption
+:::question
+Create a normal probability plot (i.e., a Q-Q plot) of the residuals. Do the residuals appear to be normally distributed? Explain in 1-2 sentences.
+:::
+
+:::answer
+```{r}
+#| label: question3.4
+#| error: TRUE
+
+# Use this code chunk to write the code necessary to answer the question. Do not start your code on this line, and do not start your code with # (this is a comment, R will ignore it).
+
+qqnorm(m1$residuals)
+qqline(m1$residuals) # add 45deg line
+```
+
+The residuals do not appear to be exactly normally distributed as the residuals do not line up perfectly with the 45 degree angle line. This plot suggests that the residuals are slightly right skewed, but generally are in line with the theoretical quantiles. 
+
+:::
+
+### Assess model validity
+:::question
+Overall, does it seem that a least squares regression line is an appropriate model for estimating the relationship between cognitive function (as measured by RFFT score) and age? Explain in 2-3 sentences.
+:::
+
+:::answer
+It seems like the least squares regression line is an appropriate model for estimating the relationship between cognitive function (RFFT score) and age. From the residual plot, we see that the linearity and equal variance assumptions are generally met, as well as the normality assumption. As a result, this model is a reaonsble model for cognitive function and age. 
+:::

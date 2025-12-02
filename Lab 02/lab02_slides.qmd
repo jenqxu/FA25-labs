@@ -48,17 +48,36 @@ plot(BMI ~ Age,
      col = "cornflowerblue",
      bg = "slategray2",
      cex = 0.75)
+
+#PCH: point character
+#col: outline color
+#bg: fill-in color
+#cex: character expansion (shrinks or enlarges based on percent scale)
+
+# there're maybe a few outliers, a fairly flat distribution, not much pattern. no relationship at all, really. seems like weak relationship. no clustering, no curve, no peak. 
+# does not seem to have a strong relationship. 
 ```
 
 ## Step 2: Fit Regression Model
-
+Examine relationship w/ a linear regression model (least-square regression). 
 ```{r}
 #| label: model1
+
+# lm: linear model
 
 mod1 <- lm(BMI ~ Age,
            data = nhanes)
 
 mod1
+
+
+#return:
+# call: what we used to fit the model
+# coefficients: self-explanatory
+# estimated line: BMI-hat-i (aka estimated BMI) = 28.4 + 0.02*Age-i
+
+# relationship b/t BMI and age is v small
+# we'd imagine correlation is quite small, close to 0 (think about variances and ... other thing)
 ```
 
 ## Using the `summary()` function {.smaller}
@@ -68,6 +87,11 @@ We can use `summary()` to get more information from the model fit:
 #| label: summarize-mod1
 
 summary(mod1)
+
+# we get residuals (epsilon-i-hat = Y-i - Y-hat-i)
+# then we get coefficient in a "coefficient table", where we get coefficient and Standard errors (SD of an estimator. so o.01825 is the sqrt of something/SSX). 
+# residual SE: sigma-hat = sqrt(sigma-hat-squared)
+
 ```
 
 ## Plotting the fitted regression model
@@ -76,7 +100,7 @@ summary(mod1)
 #| label: scatterplot-with-line
 #| output-location: slide
 
-#plot the data
+#plot the data (copy-pasted)
 plot(BMI ~ Age, 
      data = nhanes,
      main = "BMI versus Age in the NHANES data (n = 500)",
@@ -85,10 +109,14 @@ plot(BMI ~ Age,
      bg = "slategray2",
      cex = 0.75)
 
+# pass the regression model object
 abline(mod1, 
        col = "red",
        lty = 2,
        lwd = 2)
+
+#lty: line type
+#lwd: line width
 ```
 
 ## `abline()`
@@ -103,10 +131,14 @@ The `abline()` function adds lines to plots.
 
 abline(a = NULL, b = NULL, h = NULL, v = NULL, reg = NULL,
        coef = NULL, ...)
+
+# h: horizontal
+# v: vertical
+# a, b correspond to y = a + bx
 ```
 
 ## Centering covariates
-
+Transform is a function in Base R (we could also use Mutate)
 ```{r}
 #| label: centering-covariates
 
@@ -116,7 +148,7 @@ nhanes <- transform(nhanes,
 
 mod2 <- lm(BMI ~ Age_cen, data = nhanes)
 
-# Approach 2: Inline centering
+# Approach 2: Inline centering (I)
 mod3 <- lm(BMI ~ I(Age - mean(Age)),
            data = nhanes)
 ```
@@ -133,6 +165,8 @@ Notes:
 mod1
 mod2
 mod3
+
+# centered mode: you get a new intercept and same slope (the intercept is now the mean)
 ```
 
 
@@ -146,7 +180,7 @@ We can either use the `residuals()` function ("method") for `lm` objects, or acc
 #| label: extract-residuals
 
 mod1.resids <- residuals(mod1)
-mod1.resids[1:5]
+mod1.resids[1:5] # look at first 5 residuals
 
 mod1.resids <- mod1$residuals
 mod1.resids[1:5]
@@ -177,6 +211,7 @@ mod1.pred[1:5]
 - **E**qual variances
 
 We can check these assumptions with two plots.
+It's hard to check independence assumption, however, you just gotta think. 
 
 ## Residuals vs. fitted values plot
 We'll plot the residuals $\hat{\epsilon}_i$ against the fitted values $\hat{Y}_i$.
@@ -184,6 +219,8 @@ We'll plot the residuals $\hat{\epsilon}_i$ against the fitted values $\hat{Y}_i
 ```{r}
 #| label: resid-fitted-plot
 #| output-location: slide
+
+# Y vs. X
 plot(mod1.resids ~ mod1.pred,
      main = "Residual Plot for BMI vs Age (n = 500)",
      xlab = "Predicted BMI", ylab = "Residual",
@@ -194,10 +231,10 @@ abline(h = 0, lwd = 2, col = "darkgray")
 ```
 
 ## Residuals vs. fitted values plot
-What to look for:
+What to look for (random scatter around 0 with constant width):
 
-1. **Shape**: Recognizable patterns other than a flat line indicate that something's missing or that the functional form of the relationship between $Y$ and $X$ is *misspecified*. This checks the linearity assumption.
-1. **Spread**: The points should be evenly distributed around the x axis without *fanning* or *funneling*. This checks the equal variances assumption.
+1. **Shape**: Recognizable patterns other than a flat line around 0 indicate that something's missing or that the functional form of the relationship between $Y$ and $X$ is *misspecified*. This checks the linearity assumption - that E[Yi|Xi] = B0 + B1Xi, or Yi = B0 + B1Xi + error-i. (like if it's curvy, we've missed something out of the model that explains the relationship). If linearity assumption is wrong (like underlying model is Yi = B0 + B1Xi^2 + error-i), then residuals would look funky, likely a curve. But if it's correct, then we expect errors have mean 0, so mean of errors should be about 0 no matter the Y-axis. We want the plot to be able to fold along the 0 line and be pretty symmetric. 
+1. **Spread**: The points should be evenly distributed around the x axis of 0 without *fanning* or *funneling*. This checks the equal variances assumption. Even uniform band means "reasonable"; Violated if we see points that are fanning. If we see fanning/funnelling, there's some residual variance we're not taking into account, like maybe diff popns or clustering or dependency across observations like multiple obs from one individual, meaning we need to think about our data collecting process. We don't want variabilty changing with the Yis. If very obvious, funnelling/fanning is bad, but otherwise, you only know it when you see it. Here we see some outliers, variability b/t 29-29.2 is bigger than 29.8-30.0, but it's not worth it, bulk of points are pretty flat, it's looking p good (no weird shape, pretty uniform, no concerns). It's mostly visual, no numbers that tell us. You instead look at it and make an argument. If we see an S shape, we maybe have missed a covariate or the X's should be a different form (like an X^2). 
 
 ## Residuals vs. fitted values plot
 
@@ -208,9 +245,11 @@ What to look for:
 
 ## Quantile-quantile (Q-Q) plot
 
-A Q-Q plot displays the ordered values of the $n$ residuals against the corresponding $n$ quantiles of the standard normal distribution.
+A Q-Q plot displays the ordered values of the $n$ residuals against the corresponding $n$ quantiles of the standard normal distribution (0, 1). Like if we had 500 points, it'll look at the 1/500th quantile, 2/500th quantile, etc.
 
-The closer the points are to a 45$\degree$ line, the better the normality assumption is met.
+The closer the points are to a 45$\degree$ line, the better the normality assumption is met. The points will never be exactly on the line. 
+
+It helps us check normality assumption. 
 
 ## Quantile-quantile (Q-Q) plot
 
@@ -219,16 +258,28 @@ The closer the points are to a 45$\degree$ line, the better the normality assump
 
 qqnorm(mod1$residuals)
 qqline(mod1$residuals) # add 45deg line
+
+# our sample residuals on y axis range from -10 to 40. 
+# our quantiles on x-axis. 
+# if our residuals follow a normal distribution, they'll line up quite well w/ the theoretical quantiles. 
+# so we're looking at.... how quickly does the histogram of sample residuals accumulate area to the left vs. the standard normal residuals. we're basically plotting the 2 CDFs against each other. 
 ```
 
 ## Interpreting Q-Q plots
 
 The Q-Q plot depicts *quantiles*: values that have accumulated a certain amount of area under a distribution to the left.
 
-- Points above the 45$\degree$ line indicate that area to the left accumulates *faster than expected* (sample quantiles are higher than the theoretical quantiles predict they will be). 
+- Points above the 45$\degree$ line indicate that area to the left accumulates *faster than expected* (sample quantiles are higher than the theoretical quantiles predict they will be). (AKA: sample quantiles are accumulating area to the left faster than if they were normal).
 - Points below the 45$\degree$ line indicate that area to the left accumulates *slower than expected* (sample quantiles are lower than the theoretical quantiles predict they will be).
 
 *What does this tell us about shape?*
+Distribution of residuals may... be skewed. Here, we have more residual values than we'd think we would early on. If we have more towards the bottom (aka more residuals above the 45 degree line), we have more density to the left, suggesting... residuals are skewed to the right. Left residuals are more informative than right, b/c larger left residuals mean that the right residuals need to also be big as well b/c it's cumulative.
+
+if we see a S shape and the residuals are far away from the line, it'd be like bimodal. 
+
+SO, there's something going on, there's right skew, so the distribution of residuals might not be normal. We may be a little concerned about the skew. So, we might not trust our p-values as much, b/c the normality assumption isn't satisfied. 
+
+Just think - are we concerned about the population? If it's not thaaaat many people, we're prob fine. We may see some deviation in a sample, but we shouldn't be worried about the population of the errors. 
 
 ## Interpreting Q-Q plots
 

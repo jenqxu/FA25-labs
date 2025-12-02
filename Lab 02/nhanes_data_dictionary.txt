@@ -1,0 +1,232 @@
+A sample of 500 adults from NHANES
+
+Format
+A data frame with 500 observations on the following 76 variables.
+
+ID
+a numeric vector
+
+SurveyYr
+a factor with levels 2009_10 2011_12
+
+Gender
+a factor with levels female male
+
+Age
+a numeric vector
+
+AgeDecade
+a factor with levels 0-9 10-19 20-29 30-39 40-49 50-59 60-69 70+
+
+AgeMonths
+a numeric vector
+
+Race1
+a factor with levels Black Hispanic Mexican White Other
+
+Race3
+a factor with levels Asian Black Hispanic Mexican White Other
+
+Education
+a factor with levels 8th Grade 9 - 11th Grade High School Some College College Grad
+
+MaritalStatus
+a factor with levels Divorced LivePartner Married NeverMarried Separated Widowed
+
+HHIncome
+a factor with levels 0-4999 5000-9999 10000-14999 15000-19999 20000-24999 25000-34999 35000-44999 45000-54999 55000-64999 65000-74999 75000-99999 more 99999
+
+HHIncomeMid
+a numeric vector
+
+Poverty
+a numeric vector
+
+HomeRooms
+a numeric vector
+
+HomeOwn
+a factor with levels Own Rent Other
+
+Work
+a factor with levels Looking NotWorking Working
+
+Weight
+a numeric vector
+
+Length
+a numeric vector
+
+HeadCirc
+a numeric vector
+
+Height
+a numeric vector
+
+BMI
+a numeric vector
+
+BMICatUnder20yrs
+a factor with levels UnderWeight NormWeight OverWeight Obese
+
+BMI_WHO
+a factor with levels 12.0_18.5 18.5_to_24.9 25.0_to_29.9 30.0_plus
+
+Pulse
+a numeric vector
+
+BPSysAve
+a numeric vector
+
+BPDiaAve
+a numeric vector
+
+BPSys1
+a numeric vector
+
+BPDia1
+a numeric vector
+
+BPSys2
+a numeric vector
+
+BPDia2
+a numeric vector
+
+BPSys3
+a numeric vector
+
+BPDia3
+a numeric vector
+
+Testosterone
+a numeric vector
+
+DirectChol
+a numeric vector
+
+TotChol
+a numeric vector
+
+UrineVol1
+a numeric vector
+
+UrineFlow1
+a numeric vector
+
+UrineVol2
+a numeric vector
+
+UrineFlow2
+a numeric vector
+
+Diabetes
+a factor with levels No Yes
+
+DiabetesAge
+a numeric vector
+
+HealthGen
+a factor with levels Excellent Vgood Good Fair Poor
+
+DaysPhysHlthBad
+a numeric vector
+
+DaysMentHlthBad
+a numeric vector
+
+LittleInterest
+a factor with levels None Several Most
+
+Depressed
+a factor with levels None Several Most
+
+nPregnancies
+a numeric vector
+
+nBabies
+a numeric vector
+
+Age1stBaby
+a numeric vector
+
+SleepHrsNight
+a numeric vector
+
+SleepTrouble
+a factor with levels No Yes
+
+PhysActive
+a factor with levels No Yes
+
+PhysActiveDays
+a numeric vector
+
+TVHrsDay
+a factor with levels 0_hrs 0_to_1_hr 1_hr 2_hr 3_hr 4_hr More_4_hr
+
+CompHrsDay
+a factor with levels 0_hrs 0_to_1_hr 1_hr 2_hr 3_hr 4_hr More_4_hr
+
+TVHrsDayChild
+a numeric vector
+
+CompHrsDayChild
+a numeric vector
+
+Alcohol12PlusYr
+a factor with levels No Yes
+
+AlcoholDay
+a numeric vector
+
+AlcoholYear
+a numeric vector
+
+SmokeNow
+a factor with levels No Yes
+
+Smoke100
+a factor with levels No Yes
+
+Smoke100n
+a factor with levels Non-Smoker Smoker
+
+SmokeAge
+a numeric vector
+
+Marijuana
+a factor with levels No Yes
+
+AgeFirstMarij
+a numeric vector
+
+RegularMarij
+a factor with levels No Yes
+
+AgeRegMarij
+a numeric vector
+
+HardDrugs
+a factor with levels No Yes
+
+SexEver
+a factor with levels No Yes
+
+SexAge
+a numeric vector
+
+SexNumPartnLife
+a numeric vector
+
+SexNumPartYear
+a numeric vector
+
+SameSex
+a factor with levels No Yes
+
+SexOrientation
+a factor with levels Bisexual Heterosexual Homosexual
+
+PregnantNow
+a factor with levels Yes No Unknown
